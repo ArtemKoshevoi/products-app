@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemsService } from '../items.service';
+import { Select, Store } from '@ngxs/store';
+import { GetItems } from '../store/items/items.actions';
+import { ItemsState } from '../store/items/items.state';
+import { Observable } from 'rxjs';
+import { Item } from '../model/item.model';
 
 @Component({
   selector: 'app-table-content',
@@ -7,7 +11,8 @@ import { ItemsService } from '../items.service';
   styleUrls: ['./table-content.component.scss'],
 })
 export class TableContentComponent implements OnInit {
-  items$ = this.itemsService.getItems();
+  @Select(ItemsState.getItemsList) items$: Observable<Item[]>;
+
   displayedColumns: string[] = [
     'id',
     'name',
@@ -17,7 +22,9 @@ export class TableContentComponent implements OnInit {
     'total',
   ];
 
-  constructor(private itemsService: ItemsService) {}
+  constructor(private store: Store) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.store.dispatch(new GetItems());
+  }
 }

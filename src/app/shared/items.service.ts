@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Item } from './item';
-import { shareReplay, tap } from 'rxjs/operators';
+import { shareReplay } from 'rxjs/operators';
+import { Item } from '../model/item.model';
 
 @Injectable({
   providedIn: 'root',
@@ -13,10 +13,7 @@ export class ItemsService {
   };
 
   getItems() {
-    return this.http.get<Item[]>(this.itemsUrl).pipe(
-      tap((res) => console.log(111, res)),
-      shareReplay()
-    );
+    return this.http.get<Item[]>(this.itemsUrl).pipe(shareReplay());
   }
   constructor(private http: HttpClient) {}
 }
