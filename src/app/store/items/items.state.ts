@@ -2,18 +2,20 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
 
-import { Item } from '../../model/item.model';
 import { GetItems } from './items.actions';
 import { ItemsService } from '../../shared/items.service';
+import { createEntities } from '../../shared/createEntities';
 
 export interface ItemStateModel {
-  items: Item[];
+  ids: number[];
+  entities: {};
 }
 
 @State<ItemStateModel>({
   name: 'items',
   defaults: {
-    items: [],
+    ids: [],
+    entities: {},
   },
 })
 @Injectable()
@@ -22,17 +24,19 @@ export class ItemsState {
 
   @Selector()
   static getItemsList(state: ItemStateModel) {
-    return state.items;
+    return state.ids.map((id) => state.entities[id]);
   }
 
   @Action(GetItems)
-  getItems({ setState, getState }: StateContext<ItemStateModel>) {
+  getItems(ctx: StateContext<ItemStateModel>) {
     return this.itemsService.getItems().pipe(
       tap((result) => {
-        const state = getState();
-        setState({
+        const state = ctx.getState();
+        const entities = createEntities(result, state.entities);
+        ctx.setState({
           ...state,
-          items: result,
+          ids: entities.ids,
+          entities: entities.entities,
         });
       })
     );

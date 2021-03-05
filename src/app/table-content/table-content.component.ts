@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { GetItems } from '../store/items/items.actions';
-import { ItemsState } from '../store/items/items.state';
 import { Observable } from 'rxjs';
 import { Item } from '../model/item.model';
+import { ItemsGetter } from '../store/items/items-getter.state';
+import { ItemsState } from '../store/items/items.state';
 
 @Component({
   selector: 'app-table-content',
