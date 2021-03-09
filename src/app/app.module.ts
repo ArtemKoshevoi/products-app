@@ -20,6 +20,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { TableContentComponent } from './table-content/table-content.component';
 import { ItemsState } from './store/items/items.state';
+import { SubItemState } from './store/subItems/subItem.state';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, TableContentComponent],
@@ -36,7 +37,7 @@ import { ItemsState } from './store/items/items.state';
     HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
       dataEncapsulation: false,
     }),
-    NgxsModule.forRoot([ItemsState], {
+    NgxsModule.forRoot([ItemsState, SubItemState], {
       developmentMode: !environment.production,
     }),
     NgxsReduxDevtoolsPluginModule.forRoot(),

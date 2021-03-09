@@ -1,11 +1,9 @@
-import { Item } from '../model/item.model';
-
-export function createEntities(
-  payload: Item[],
-  initialValue
-): { entities: {}; ids: number[] } {
+export function createEntities(payload: any[], initialValue) {
   const { ids = [], entities } = initialValue;
-  return payload.reduce(
+  return payload.reduce<{
+    entities: { [key: number]: any };
+    ids: number[];
+  }>(
     (acc, item) => {
       return {
         entities: { ...acc.entities, [item.id]: item },

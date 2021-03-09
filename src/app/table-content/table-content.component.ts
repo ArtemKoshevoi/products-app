@@ -3,7 +3,6 @@ import { Select, Store } from '@ngxs/store';
 import { GetItems } from '../store/items/items.actions';
 import { Observable } from 'rxjs';
 import { Item } from '../model/item.model';
-import { ItemsGetter } from '../store/items/items-getter.state';
 import { ItemsState } from '../store/items/items.state';
 
 @Component({
