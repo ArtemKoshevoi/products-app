@@ -3,7 +3,12 @@ import { Injectable } from '@angular/core';
 import { catchError, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
-import { GetItems, GetItemsFail, GetItemsSuccess } from './items.actions';
+import {
+  CreateItems,
+  GetItems,
+  GetItemsFail,
+  GetItemsSuccess,
+} from './items.actions';
 import { ItemsService } from '../../shared/items.service';
 import { createEntities } from '../../shared/createEntities';
 import { Item } from '../../model/item.model';
@@ -34,12 +39,6 @@ export class ItemsState {
   getItems(ctx: StateContext<ItemStateModel>) {
     return this.itemsService.getItems().pipe(
       switchMap((result) => {
-        result.map((item) => {
-          item.subItem = {
-            id: Math.random(),
-            name: 'name' + Math.random(),
-          };
-        });
         const subItemEntities = result.map((item) => item.subItem);
         const itemEntities = result.map((item) => {
           const { subItem, ...args } = item;
@@ -74,5 +73,10 @@ export class ItemsState {
   getItemsFail({ err }: GetItemsFail) {
     console.log(`Error is ${err}`);
     return of('');
+  }
+
+  @Action(CreateItems)
+  createItems(ctx: StateContext<ItemStateModel>, { payload }: CreateItems) {
+    return this.itemsService.addItem(payload);
   }
 }

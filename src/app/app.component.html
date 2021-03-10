@@ -1,2 +1,12 @@
 <app-header></app-header>
-<app-table-content></app-table-content>
+<nav>
+  <ul>
+    <li>
+      <a routerLink="table-content" routerLinkActive="active">Items Table</a>
+      <a routerLink="create-edit-items" routerLinkActive="active"
+        >Create New Item</a
+      >
+    </li>
+  </ul>
+</nav>
+<router-outlet></router-outlet>

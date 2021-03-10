@@ -21,9 +21,16 @@ import { HeaderComponent } from './header/header.component';
 import { TableContentComponent } from './table-content/table-content.component';
 import { ItemsState } from './store/items/items.state';
 import { SubItemState } from './store/subItems/subItem.state';
+import { CreateEditItemsComponent } from './create-edit-items/create-edit-items.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, TableContentComponent],
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    TableContentComponent,
+    CreateEditItemsComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -33,6 +40,7 @@ import { SubItemState } from './store/subItems/subItem.state';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    ReactiveFormsModule,
     HttpClientModule,
     HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
       dataEncapsulation: false,

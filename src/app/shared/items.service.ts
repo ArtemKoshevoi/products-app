@@ -15,5 +15,11 @@ export class ItemsService {
   getItems() {
     return this.http.get<Item[]>(this.itemsUrl).pipe(shareReplay());
   }
+
+  addItem(newItem: Item) {
+    return this.http
+      .post(this.itemsUrl, newItem, this.httpOptions)
+      .pipe(shareReplay());
+  }
   constructor(private http: HttpClient) {}
 }

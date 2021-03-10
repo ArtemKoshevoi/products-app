@@ -1,0 +1,19 @@
+label {
+  display: block;
+  width: 6em;
+  margin: 0.5em 0;
+  color: #607d8b;
+  font-weight: bold;
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  padding-left: 40px;
+  padding-top: 20px;
+}
+
+input {
+  height: 2em;
+  font-size: 1em;
+}

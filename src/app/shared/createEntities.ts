@@ -1,9 +1,11 @@
+interface OutputEntities {
+  entities: { [key: number]: any };
+  ids: number[];
+}
+
 export function createEntities(payload: any[], initialValue) {
   const { ids = [], entities } = initialValue;
-  return payload.reduce<{
-    entities: { [key: number]: any };
-    ids: number[];
-  }>(
+  return payload.reduce<OutputEntities>(
     (acc, item) => {
       return {
         entities: { ...acc.entities, [item.id]: item },

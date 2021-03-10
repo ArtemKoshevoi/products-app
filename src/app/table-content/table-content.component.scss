@@ -1,3 +1,15 @@
 table {
   width: 100%;
 }
+
+button {
+  margin: 20px;
+  padding: 5px;
+  max-width: 120px;
+  align-self: flex-end;
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+}
