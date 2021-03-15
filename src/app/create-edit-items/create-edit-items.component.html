@@ -1,42 +1,44 @@
-<form [formGroup]="itemsForm" (ngSubmit)="onSubmit()">
-  <label>
-    Id:
-    <input type="text" formControlName="id" />
-  </label>
+<div class="form-container">
+  <h1>Item Created</h1>
+  <form [formGroup]="itemsForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label>
+        Id:
+        <input type="number" formControlName="id" />
+      </label>
 
-  <label>
-    Name:
-    <input type="text" formControlName="name" />
-  </label>
+      <label>
+        Name:
+        <input type="text" formControlName="name" />
+      </label>
 
-  <label>
-    Description:
-    <input type="text" formControlName="description" />
-  </label>
+      <label>
+        Description:
+        <input type="text" formControlName="description" />
+      </label>
 
-  <label>
-    Price:
-    <input type="text" formControlName="price" />
-  </label>
+      <label>
+        Price:
+        <input type="number" formControlName="price" />
+      </label>
 
-  <label>
-    Count:
-    <input type="text" formControlName="count" />
-  </label>
+      <label>
+        Count:
+        <input type="number" formControlName="count" />
+      </label>
+    </div>
+    <div formGroupName="subItem">
+      <label>
+        SubItem id:
+        <input type="number" formControlName="id" />
+      </label>
 
-  <div formGroupName="subItem">
-    <h3>SubItem</h3>
+      <label>
+        SubItem name:
+        <input type="text" formControlName="name" />
+      </label>
+    </div>
 
-    <label>
-      SubItem id:
-      <input type="text" formControlName="id" />
-    </label>
-
-    <label>
-      SubItem name:
-      <input type="text" formControlName="name" />
-    </label>
-  </div>
-
-  <button type="submit" [disabled]="!itemsForm.valid">Submit</button>
-</form>
+    <button type="submit" [disabled]="!itemsForm.valid">Submit</button>
+  </form>
+</div>

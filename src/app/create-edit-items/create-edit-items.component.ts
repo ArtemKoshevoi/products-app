@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { CreateItems } from '../store/items/items.actions';
+import { CreateItems, CreateItemsSuccess } from '../store/items/items.actions';
 
 @Component({
   selector: 'app-create-edit-items',
@@ -26,6 +26,7 @@ export class CreateEditItemsComponent implements OnInit {
 
   onSubmit() {
     this.store.dispatch(new CreateItems(this.itemsForm.value));
+    // TODO: move redirect to CreateItemsSuccess
     this.router.navigate(['/table-content']);
     this.itemsForm.reset();
   }

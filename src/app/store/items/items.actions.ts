@@ -5,6 +5,14 @@ export const ActionTypes = {
   GET_ITEMS_SUCCESS: '[Items] Get Success',
   GET_ITEMS_FAIL: '[Items] Get Fail',
   CREATE_ITEMS: '[Items] Create',
+  CREATE_ITEMS_SUCCESS: '[Items] Create Success',
+  CREATE_ITEMS_FAIL: '[Items] Create Fail',
+  DELETE_ITEMS: '[Items] Delete',
+  DELETE_ITEMS_SUCCESS: '[Items] Delete Success',
+  DELETE_ITEMS_FAIL: '[Items] Delete Fail',
+  UPDATE_ITEMS: '[Items] Delete',
+  UPDATE_ITEMS_SUCCESS: '[Items] Delete Success',
+  UPDATE_ITEMS_FAIL: '[Items] Delete Fail',
 };
 
 export class GetItems {
@@ -24,4 +32,41 @@ export class GetItemsFail {
 export class CreateItems {
   static readonly type = ActionTypes.CREATE_ITEMS;
   constructor(public payload: Item) {}
+}
+
+export class CreateItemsSuccess {
+  static readonly type = ActionTypes.CREATE_ITEMS_SUCCESS;
+}
+
+export class CreateItemsFail {
+  static readonly type = ActionTypes.CREATE_ITEMS_FAIL;
+  constructor(public err: string) {}
+}
+
+export class DeleteItems {
+  static readonly type = ActionTypes.DELETE_ITEMS;
+  constructor(public payload: number) {}
+}
+
+export class DeleteItemsSuccess {
+  static readonly type = ActionTypes.DELETE_ITEMS_SUCCESS;
+}
+
+export class DeleteItemsFail {
+  static readonly type = ActionTypes.DELETE_ITEMS_FAIL;
+  constructor(public err: string) {}
+}
+
+export class UpdateItems {
+  static readonly type = ActionTypes.UPDATE_ITEMS;
+  constructor(public payload: Item) {}
+}
+
+export class UpdateItemsSuccess {
+  static readonly type = ActionTypes.UPDATE_ITEMS_SUCCESS;
+}
+
+export class UpdateItemsFail {
+  static readonly type = ActionTypes.UPDATE_ITEMS_FAIL;
+  constructor(public err: string) {}
 }

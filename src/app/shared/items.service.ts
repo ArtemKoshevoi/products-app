@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { shareReplay } from 'rxjs/operators';
 import { Item } from '../model/item.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,14 +13,22 @@ export class ItemsService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
-  getItems() {
+  getItems(): Observable<Item[]> {
     return this.http.get<Item[]>(this.itemsUrl).pipe(shareReplay());
   }
 
-  addItem(newItem: Item) {
-    return this.http
-      .post(this.itemsUrl, newItem, this.httpOptions)
-      .pipe(shareReplay());
+  addItem(newItem: Item): Observable<Item[]> {
+    return this.http.post<Item[]>(this.itemsUrl, newItem, this.httpOptions);
   }
+
+  deleteItem(itemId: number): Observable<Item> {
+    const url = `${this.itemsUrl}/${itemId}`;
+    return this.http.delete<Item>(url, this.httpOptions);
+  }
+
+  updateItem(item: Item) {
+    return this.http.put(this.itemsUrl, item, this.httpOptions);
+  }
+
   constructor(private http: HttpClient) {}
 }

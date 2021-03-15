@@ -2,6 +2,10 @@ table {
   width: 100%;
 }
 
+td.mat-column-delete {
+  cursor: pointer;
+}
+
 button {
   margin: 20px;
   padding: 5px;

@@ -2,18 +2,36 @@ label {
   display: block;
   width: 6em;
   margin: 0.5em 0;
-  color: #607d8b;
+  color: white;
   font-weight: bold;
 }
 
-:host {
+form {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
-  padding-left: 40px;
-  padding-top: 20px;
+  max-height: 300px;
+  width: 500px;
+  justify-content: space-around;
+  margin-bottom: 30px;
+}
+
+:host {
 }
 
 input {
   height: 2em;
   font-size: 1em;
+}
+
+h1 {
+  color: white;
+}
+.form-container {
+  background-color: #3d3d3d;
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  align-items: center;
+  justify-content: space-between;
 }

@@ -1,13 +1,21 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
-import { catchError, switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { catchError, switchMap, tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 import {
   CreateItems,
+  CreateItemsFail,
+  CreateItemsSuccess,
+  DeleteItems,
+  DeleteItemsFail,
+  DeleteItemsSuccess,
   GetItems,
   GetItemsFail,
   GetItemsSuccess,
+  UpdateItems,
+  UpdateItemsFail,
+  UpdateItemsSuccess,
 } from './items.actions';
 import { ItemsService } from '../../shared/items.service';
 import { createEntities } from '../../shared/createEntities';
@@ -28,7 +36,7 @@ export interface ItemStateModel {
 })
 @Injectable()
 export class ItemsState {
-  constructor(private itemsService: ItemsService) {}
+  constructor(private itemsService: ItemsService, private router: Router) {}
 
   @Selector()
   static getItemsList(state: ItemStateModel) {
@@ -72,11 +80,58 @@ export class ItemsState {
   @Action(GetItemsFail)
   getItemsFail({ err }: GetItemsFail) {
     console.log(`Error is ${err}`);
-    return of('');
   }
 
   @Action(CreateItems)
   createItems(ctx: StateContext<ItemStateModel>, { payload }: CreateItems) {
-    return this.itemsService.addItem(payload);
+    return this.itemsService.addItem(payload).pipe(
+      switchMap(() => {
+        return ctx.dispatch(new CreateItemsSuccess());
+      }),
+      catchError((err) => {
+        return ctx.dispatch(new CreateItemsFail(err));
+      })
+    );
+  }
+
+  @Action(CreateItemsSuccess)
+  createItemsSuccess() {}
+
+  @Action(CreateItemsFail)
+  createItemsFail({ err }: CreateItemsFail) {
+    console.log(`Error is ${err}`);
+  }
+
+  @Action(DeleteItems)
+  deleteItems(ctx: StateContext<ItemStateModel>, { payload }: DeleteItems) {
+    return this.itemsService.deleteItem(payload).pipe(
+      switchMap((result) => {
+        return ctx.dispatch([new DeleteItemsSuccess(), new GetItems()]);
+      }),
+      catchError((err) => {
+        return ctx.dispatch(new DeleteItemsFail(err));
+      })
+    );
+  }
+
+  @Action(DeleteItemsSuccess)
+  deleteItemsSuccess() {}
+
+  @Action(DeleteItemsFail)
+  deleteItemsFail({ err }: DeleteItemsFail) {
+    console.log(`Error is ${err}`);
+  }
+
+  @Action(UpdateItems)
+  updateItems(ctx: StateContext<ItemStateModel>, { payload }: UpdateItems) {
+    return this.itemsService.updateItem(payload).pipe(
+      switchMap((result) => {
+        console.log(222, result);
+        return ctx.dispatch(new UpdateItemsSuccess());
+      }),
+      catchError((err) => {
+        return ctx.dispatch(new UpdateItemsFail(err));
+      })
+    );
   }
 }
