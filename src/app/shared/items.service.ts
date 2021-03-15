@@ -17,11 +17,11 @@ export class ItemsService {
     return this.http.get<Item[]>(this.itemsUrl).pipe(shareReplay());
   }
 
-  addItem(newItem: Item): Observable<Item[]> {
-    return this.http.post<Item[]>(this.itemsUrl, newItem, this.httpOptions);
+  addItem(newItem: Item) {
+    return this.http.post<Item>(this.itemsUrl, newItem, this.httpOptions);
   }
 
-  deleteItem(itemId: number): Observable<Item> {
+  deleteItem(itemId: number) {
     const url = `${this.itemsUrl}/${itemId}`;
     return this.http.delete<Item>(url, this.httpOptions);
   }

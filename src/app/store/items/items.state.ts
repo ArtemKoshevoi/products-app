@@ -20,7 +20,8 @@ import {
 import { ItemsService } from '../../shared/items.service';
 import { createEntities } from '../../shared/createEntities';
 import { Item } from '../../model/item.model';
-import { GetSubItemsSuccess } from '../subItems/subItem.action';
+import { SetSubItems } from '../subItems/subItem.action';
+import { SubItem } from '../../model/subItem.model';
 
 export interface ItemStateModel {
   ids: number[];
@@ -43,17 +44,24 @@ export class ItemsState {
     return state.ids.map((id) => state.entities[id]);
   }
 
+  getExtractedData(
+    rowData: Item[]
+  ): { subItemEntities: SubItem[]; itemEntities: Omit<Item, 'subItem'>[] } {
+    const subItemEntities = rowData.map((item) => item.subItem);
+    const itemEntities = rowData.map((item) => {
+      const { subItem, ...args } = item;
+      return args;
+    });
+    return { subItemEntities, itemEntities };
+  }
+
   @Action(GetItems)
   getItems(ctx: StateContext<ItemStateModel>) {
     return this.itemsService.getItems().pipe(
       switchMap((result) => {
-        const subItemEntities = result.map((item) => item.subItem);
-        const itemEntities = result.map((item) => {
-          const { subItem, ...args } = item;
-          return args;
-        });
+        const { subItemEntities, itemEntities } = this.getExtractedData(result);
         return ctx.dispatch([
-          new GetSubItemsSuccess(subItemEntities),
+          new SetSubItems(subItemEntities),
           new GetItemsSuccess(itemEntities),
         ]);
       }),
@@ -85,8 +93,12 @@ export class ItemsState {
   @Action(CreateItems)
   createItems(ctx: StateContext<ItemStateModel>, { payload }: CreateItems) {
     return this.itemsService.addItem(payload).pipe(
-      switchMap(() => {
-        return ctx.dispatch(new CreateItemsSuccess());
+      switchMap((result) => {
+        const { subItem, ...args } = result;
+        return ctx.dispatch([
+          new CreateItemsSuccess(result),
+          new SetSubItems([subItem]),
+        ]);
       }),
       catchError((err) => {
         return ctx.dispatch(new CreateItemsFail(err));
@@ -95,7 +107,17 @@ export class ItemsState {
   }
 
   @Action(CreateItemsSuccess)
-  createItemsSuccess() {}
+  createItemsSuccess(
+    ctx: StateContext<ItemStateModel>,
+    { payload }: CreateItemsSuccess
+  ) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      ids: [...state.ids, payload.id],
+      entities: { ...state.entities, [payload.id]: payload },
+    });
+  }
 
   @Action(CreateItemsFail)
   createItemsFail({ err }: CreateItemsFail) {

@@ -36,6 +36,7 @@ export class CreateItems {
 
 export class CreateItemsSuccess {
   static readonly type = ActionTypes.CREATE_ITEMS_SUCCESS;
+  constructor(public payload: Item) {}
 }
 
 export class CreateItemsFail {

@@ -2,7 +2,7 @@ import { Action, State, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { SubItem } from '../../model/subItem.model';
 import { createEntities } from '../../shared/createEntities';
-import { GetSubItemsSuccess } from './subItem.action';
+import { SetSubItems } from './subItem.action';
 
 export interface SubItemStateModel {
   ids: number[];
@@ -18,10 +18,10 @@ export interface SubItemStateModel {
 })
 @Injectable()
 export class SubItemState {
-  @Action(GetSubItemsSuccess)
+  @Action(SetSubItems)
   getSubItemsSuccess(
     ctx: StateContext<SubItemStateModel>,
-    { payload }: GetSubItemsSuccess
+    { payload }: SetSubItems
   ) {
     const state = ctx.getState();
     const createdData = createEntities(payload, state);

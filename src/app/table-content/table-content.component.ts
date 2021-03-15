@@ -26,6 +26,7 @@ export class TableContentComponent implements OnInit {
 
   constructor(private store: Store) {}
 
+  // TODO: avoid get all items after redirect
   ngOnInit(): void {
     this.store.dispatch(new GetItems());
   }
