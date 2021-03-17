@@ -17,6 +17,11 @@ export class ItemsService {
     return this.http.get<Item[]>(this.itemsUrl).pipe(shareReplay());
   }
 
+  getItem(itemId: number) {
+    const url = `${this.itemsUrl}/${itemId}`;
+    return this.http.get<Item>(url);
+  }
+
   addItem(newItem: Item) {
     return this.http.post<Item>(this.itemsUrl, newItem, this.httpOptions);
   }

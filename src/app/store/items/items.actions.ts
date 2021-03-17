@@ -4,6 +4,9 @@ export const ActionTypes = {
   GET_ITEMS: '[Items] Get',
   GET_ITEMS_SUCCESS: '[Items] Get Success',
   GET_ITEMS_FAIL: '[Items] Get Fail',
+  GET_ITEM: '[Items] Get Item',
+  GET_ITEM_SUCCESS: '[Items] Get Item Success',
+  GET_ITEM_FAIL: '[Items] Get Item Fail',
   CREATE_ITEMS: '[Items] Create',
   CREATE_ITEMS_SUCCESS: '[Items] Create Success',
   CREATE_ITEMS_FAIL: '[Items] Create Fail',
@@ -26,6 +29,21 @@ export class GetItemsSuccess {
 
 export class GetItemsFail {
   static readonly type = ActionTypes.GET_ITEMS_FAIL;
+  constructor(public err: string) {}
+}
+
+export class GetItem {
+  static readonly type = ActionTypes.GET_ITEM;
+  constructor(public payload: number) {}
+}
+
+export class GetItemSuccess {
+  static readonly type = ActionTypes.GET_ITEM_SUCCESS;
+  constructor(public payload: Item) {}
+}
+
+export class GetItemFail {
+  static readonly type = ActionTypes.GET_ITEM_FAIL;
   constructor(public err: string) {}
 }
 

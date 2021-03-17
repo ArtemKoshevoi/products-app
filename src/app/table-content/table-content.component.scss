@@ -2,7 +2,8 @@ table {
   width: 100%;
 }
 
-td.mat-column-delete {
+td.mat-column-delete,
+td.mat-column-create {
   cursor: pointer;
 }
 

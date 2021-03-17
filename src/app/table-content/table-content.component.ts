@@ -4,6 +4,7 @@ import { DeleteItems, GetItems } from '../store/items/items.actions';
 import { Observable } from 'rxjs';
 import { Item } from '../model/item.model';
 import { ItemsState } from '../store/items/items.state';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-table-content',
@@ -24,7 +25,7 @@ export class TableContentComponent implements OnInit {
     'create',
   ];
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private router: Router) {}
 
   // TODO: avoid get all items after redirect
   ngOnInit(): void {
@@ -33,5 +34,9 @@ export class TableContentComponent implements OnInit {
 
   deleteItem(id: number) {
     this.store.dispatch(new DeleteItems(id));
+  }
+
+  editItem(itemId: string) {
+    this.router.navigate([`/create-edit-items`, { itemId }]);
   }
 }

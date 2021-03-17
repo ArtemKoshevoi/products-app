@@ -1,4 +1,10 @@
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import {
+  Action,
+  createSelector,
+  Selector,
+  State,
+  StateContext,
+} from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -10,9 +16,12 @@ import {
   DeleteItems,
   DeleteItemsFail,
   DeleteItemsSuccess,
+  GetItem,
+  GetItemFail,
   GetItems,
   GetItemsFail,
   GetItemsSuccess,
+  GetItemSuccess,
   UpdateItems,
   UpdateItemsFail,
   UpdateItemsSuccess,
@@ -42,6 +51,12 @@ export class ItemsState {
   @Selector()
   static getItemsList(state: ItemStateModel) {
     return state.ids.map((id) => state.entities[id]);
+  }
+
+  static getItemById(itemId: number) {
+    return createSelector([ItemsState], (state: ItemStateModel) => {
+      return state.entities[itemId];
+    });
   }
 
   getExtractedData(
@@ -94,6 +109,7 @@ export class ItemsState {
   createItems(ctx: StateContext<ItemStateModel>, { payload }: CreateItems) {
     return this.itemsService.addItem(payload).pipe(
       switchMap((result) => {
+        console.log('create!');
         const { subItem, ...args } = result;
         return ctx.dispatch([
           new CreateItemsSuccess(result),
@@ -144,11 +160,35 @@ export class ItemsState {
     console.log(`Error is ${err}`);
   }
 
+  @Action(GetItem)
+  getItem(ctx: StateContext<ItemStateModel>, { payload }: GetItem) {
+    return this.itemsService.getItem(payload).pipe(
+      switchMap((result) => {
+        return ctx.dispatch(new GetItemSuccess(result));
+      }),
+      catchError((err) => {
+        return ctx.dispatch(new GetItemFail(err));
+      })
+    );
+  }
+
+  @Action(GetItemSuccess)
+  getItemSuccess(
+    ctx: StateContext<ItemStateModel>,
+    { payload }: GetItemSuccess
+  ) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      entities: { ...state.entities, [payload.id]: payload },
+    });
+  }
+
   @Action(UpdateItems)
   updateItems(ctx: StateContext<ItemStateModel>, { payload }: UpdateItems) {
     return this.itemsService.updateItem(payload).pipe(
       switchMap((result) => {
-        console.log(222, result);
+        console.log(999, result);
         return ctx.dispatch(new UpdateItemsSuccess());
       }),
       catchError((err) => {
